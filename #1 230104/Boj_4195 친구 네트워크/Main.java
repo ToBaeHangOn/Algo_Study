@@ -1,45 +1,45 @@
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class Main {
+    static StringBuilder sb = new StringBuilder();
     static int[] parent;
+    static int[] count;
     public static void main(String[] args) throws IOException{
-        Scanner sc = new Scanner(System.in);
-        int tc = sc.nextInt();
-
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int tc = Integer.parseInt(br.readLine());
         for(int i = 0; i < tc; i++){
             int cnt = 0;
-            int F = sc.nextInt();
+            int F = Integer.parseInt(br.readLine());
             List<String> list = new ArrayList<>();
 
             parent = new int[F * 2];
+            count = new int[F * 2];
+            Arrays.fill(count, 1);
+
             for(int j = 0; j < F * 2; j++){
                 parent[j] = j;
             }
 
+            Map<String, Integer> map = new HashMap<>();
+
             for(int j = 0; j < F; j++){
-                String f1 = sc.next();
-                int a = cnt;
+                StringTokenizer st = new StringTokenizer(br.readLine());
+                String f1 = st.nextToken();
+                String f2 = st.nextToken();
 
-                int index = list.indexOf(f1);
-                if(index == -1){list.add(f1); cnt++;}
-                else{a = index;}
-
-                String f2 = sc.next();
-                int b = cnt;
-
-                index = list.indexOf(f2);
-                if(index == -1){list.add(f2); cnt++;}
-                else{b = index;}
-
-                union(a, b);
-                int union_cnt = 0;
-                for(int k = 0; k < list.size(); k++){
-                    if(find(k) == find(a)) union_cnt++;
+                if(!map.containsKey(f1)){
+                    map.put(f1, cnt++);
                 }
-                System.out.println(union_cnt);
+                if(!map.containsKey(f2)){
+                    map.put(f2, cnt++);
+                }
+
+                union(map.get(f1), map.get(f2));
+
+                System.out.println(count[map.get(f1)]);
             }
         }
     }
@@ -52,9 +52,12 @@ public class Main {
     }
 
     static void union(int a, int b){
-        a = find(a);
-        b = find(b);
-        if(a != b)
-            parent[b] = a;
+        int pa = find(a);
+        int pb = find(b);
+        if(pa != pb) {
+            parent[pb] = pa;
+            count[a] = count[a] + count[b];
+            count[b] = count[a];
+        }
     }
 }
