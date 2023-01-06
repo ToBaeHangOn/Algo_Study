@@ -1,14 +1,14 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    static StringBuilder sb = new StringBuilder();
     static int[] parent;
     static int[] count;
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringBuilder sb = new StringBuilder();
+
         int tc = Integer.parseInt(br.readLine());
         for(int i = 0; i < tc; i++){
             int cnt = 0;
@@ -37,11 +37,13 @@ public class Main {
                     map.put(f2, cnt++);
                 }
 
-                union(map.get(f1), map.get(f2));
-
-                System.out.println(count[map.get(f1)]);
+                sb.append(union(map.get(f1), map.get(f2)) + "\n");
             }
         }
+        bw.write(sb.toString());
+        bw.flush();
+        bw.close();
+        br.close();
     }
 
     static int find(int a){
@@ -51,13 +53,14 @@ public class Main {
             return parent[a] = find(parent[a]);
     }
 
-    static void union(int a, int b){
-        int pa = find(a);
-        int pb = find(b);
-        if(pa != pb) {
-            parent[pb] = pa;
+    static int union(int a, int b){
+        a = find(a);
+        b = find(b);
+        if(a != b) {
+            parent[b] = a;
             count[a] = count[a] + count[b];
             count[b] = count[a];
         }
+        return count[a];
     }
 }
