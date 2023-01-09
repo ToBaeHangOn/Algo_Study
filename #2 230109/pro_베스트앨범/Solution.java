@@ -50,7 +50,11 @@ public class Solution {
             if(secondIdx != -1){ answer[cnt++] = secondIdx;}
         }
 
-        return answer;
+        int[] result = new int[cnt];
+        for(int i = 0; i < cnt; i++){
+            result[i] = answer[i];
+        }
+        return result;
     }
 
 }
