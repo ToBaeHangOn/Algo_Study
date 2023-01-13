@@ -28,8 +28,8 @@ class Solution {
 //                System.out.print(emoteRatio[i] + " ");
                 for (int j = 0; j < M; j++) {
                     if (user[j][0] <= emoteRatio[i] * 10) {
-                        double ratio = emoteRatio[i] / 10.0;
-                        int price = ((int) ((double) emos[i] * (1.0 - ratio)));
+//                        double ratio = emoteRatio[i] / 10.0;
+                        int price = emos[i] * (100 - emoteRatio[i] * 10) / 100;
 //                        System.out.print(price + ", ");
                         priceArr[j] += price;
                     }
