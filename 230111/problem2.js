@@ -50,7 +50,7 @@ const move = (num) => {
   dice.back = arr[5];
 };
 
-//방향 조절 함수
+//방향 조절 함수w
 const dx = [0, 0, -1, 1];
 const dy = [1, -1, 0, 0];
 const solution = (x, y) => {
