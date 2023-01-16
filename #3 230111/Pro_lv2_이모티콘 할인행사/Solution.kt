@@ -6,7 +6,7 @@ data class Emoticon(
 ) {
     // 할인이 적용된 실가격
     val actualPrice: Int
-        get() = (price * (1 - rate / 100.0)).toInt()
+        get() = price * (100 - rate) / 100
 }
 
 data class User(
