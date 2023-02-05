@@ -26,7 +26,10 @@ public class Main {
                     else
                         sb.append(startByOne());
                 }
-                else sb.append(1);
+                else {
+                    sb.append(1);
+                    index++;
+                }
             }
             else index++;
         }
