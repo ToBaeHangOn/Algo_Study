@@ -1,3 +1,47 @@
+class Solution {
+    /**
+     * dp[x] -> x 등대를 루트로 둔다.
+     * dp[x][0] : x 등대를 껐을 때 켜진 등대의 수
+     * dp[x][1] : x 등대를 켰을 때 켜진 등대의 수
+     */
+    lateinit var graph: Array<HashSet<Int>>
+    lateinit var dp: Array<IntArray>
+    lateinit var visit: BooleanArray
+
+    fun solution(n: Int, lighthouse: Array<IntArray>): Int {
+        graph = Array(n + 1) { hashSetOf() }
+        dp = Array(n + 1) { intArrayOf(0, 1) }
+        visit = BooleanArray(n + 1)
+
+        // 그래프 형성
+        lighthouse.forEach { info ->
+            val (from, to) = info
+
+            graph[from].add(to)
+            graph[to].add(from)
+        }
+
+        // 1번 등대를 루트로 두고 차례로 탐색한다.
+        dfs(1)
+
+        return dp[1].minOf { it }
+    }
+
+    fun dfs(from: Int) {
+        visit[from] = true
+
+        graph[from].forEach { to ->
+            if (visit[to]) return@forEach
+
+            dfs(to)
+
+            dp[from][0] += dp[to][1] // from 등대를 안켰으면 to 등대는 무조건 켠다.
+            dp[from][1] += dp[to].minOf { it } // from 등대를 켰으면 to 등대는 켜거나 끄거나
+        }
+    }
+}
+
+/**
 import java.util.LinkedList
 
 class Solution {
@@ -77,3 +121,4 @@ fun main() {
         Solution().solution(n, lighthouse)
     )
 }
+ */

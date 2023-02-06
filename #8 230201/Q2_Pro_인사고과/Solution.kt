@@ -1,3 +1,33 @@
+class Solution {
+    fun solution(scores: Array<IntArray>): Int {
+        val target = scores[0] // 첫번째 정보가 완호의 점수
+        var maxEvaluation = 0  // 루프를 돌며 최대 동료 평가 점수를 갱신
+        var rank = 1
+
+        /**
+         * 주어진 scores를 다음과 같이 정렬 후 순회한다.
+         * 1. 근무 태도 점수의 내림차 순
+         * 2. 동료 평가 점수의 오름차 순
+         */
+        scores.sortedWith(compareBy({ -it[0] }, { it[1] })).forEach { score ->
+            if (score[1] >= maxEvaluation) {
+                maxEvaluation = score[1]
+            }
+            // 최대 동료 평가 점수가 갱신 되지 않는 다면 해당 사람은 인센티브 자격이 없다.
+            else {
+                if (score.contentEquals(target)) return -1 // 그 사람이 완호라면 -1
+                return@forEach // continue
+            }
+
+            // 현재 사람이 완호 보다 총합 점수가 높으면 완호의 순위는 하락한다.
+            if (score.sum() > target.sum()) rank++
+        }
+
+        return rank
+    }
+}
+
+/**
 data class Person(
     val id: Int,
     val attitude: Int = 0,
@@ -26,3 +56,4 @@ class Solution {
             .let { if (it < 0) -1 else it + 1 }
     }
 }
+ */
