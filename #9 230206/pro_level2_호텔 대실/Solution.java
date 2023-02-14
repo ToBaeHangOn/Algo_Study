@@ -7,20 +7,20 @@ class Solution {
         int answer = 0;
         Arrays.sort(book_time, (a, b) -> toInt(a[0]) == toInt(b[0]) ? toInt(a[1]) - toInt(b[1]) : toInt(a[0]) - toInt(b[0]));
         for (String[] time : book_time) {
-            System.out.println(time[0] + " ~ " +time[1]);
+            System.out.println(time[0] + " ~ " + time[1]);
         }
         ArrayList<Reservation> list = new ArrayList<>();
-        for(String[] time : book_time) {
-            if(list.size() > 0) {
+        for (String[] time : book_time) {
+            if (list.size() > 0) {
                 boolean isAdded = false;
                 for (Reservation reservation : list) {
-                    if (reservation.endTime <= toInt(time[0])) {
-                        reservation.addReserv(time);
+                    if (reservation.endMinute <= getMinutes(time[0])) {
+                        reservation.addReserv(time[1]);
                         isAdded = true;
                         break;
                     }
                 }
-                if(!isAdded)
+                if (!isAdded)
                     list.add(new Reservation(time));
             } else {
                 list.add(new Reservation(time));
@@ -37,18 +37,28 @@ class Solution {
         return Integer.parseInt(sb.toString());
     }
 
-    static class Reservation {
-        int endTime;
+    static int getMinutes(String time) {
+        StringTokenizer st = new StringTokenizer(time, ":");
+        int hour = Integer.parseInt(st.nextToken());
+        int minute = Integer.parseInt(st.nextToken());
 
-        public Reservation(String[] endTime) {
-            addReserv(endTime);
+        return hour * 60 + minute;
+    }
+
+    static class Reservation {
+        int startMinute;
+        int endMinute;
+
+        public Reservation(String[] time) {
+            this.startMinute = getMinutes(time[0]);
+            // 종료시간 10분 더하기
+            this.endMinute = getMinutes(time[1]) + 10;
         }
 
-        public void addReserv(String[] endTime) {
-            StringTokenizer st = new StringTokenizer(endTime[1], ":");
-            st.nextToken();
-            int min = Integer.parseInt(st.nextToken());
-            this.endTime = min + 10 >= 60 ? toInt(endTime[1]) + 100 - min : toInt(endTime[1]) + 10;
+
+        public void addReserv(String endTime) {
+            int min = getMinutes(endTime);
+            this.endMinute = min + 10;
         }
     }
 }
