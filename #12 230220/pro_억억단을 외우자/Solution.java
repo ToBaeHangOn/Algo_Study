@@ -3,9 +3,16 @@ public class Solution {
     static int[] solution(int e, int[] starts) {
         int[] answer = {};
         int[] divisor = new int[e + 1];
-        for(int i = 1; i <= e; i++){
-            divisor[i] = div(i);
+//        for(int i = 1; i <= e; i++){
+//            divisor[i] = div(i);
+//        }
+        // New code start
+        for (int i = 1; i <= e; i++) {
+            for (int j = 1; j <= e / i; j++) {
+                divisor[i * j]++;
+            }
         }
+        // New code end
         int max = 0;
         int[] dp = new int[e + 1];
         for(int i = e; i > 0; i--){
@@ -20,14 +27,6 @@ public class Solution {
             answer[i] = dp[starts[i]];
         }
         return answer;
-    }
-    static int div(int n){
-        int cnt = 0;
-        for(int i = 1; i * i <= n; i++){
-            if(i * i == n) cnt++;
-            else if(n % i == 0) cnt += 2;
-        }
-        return cnt;
     }
     public static void main(String[] args) throws IOException {
         int e = 8;
