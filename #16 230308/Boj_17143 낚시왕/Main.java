@@ -58,6 +58,26 @@ public class Main {
                 if(sharks[cur_shark] == null) continue; // 죽은 상어는 continue
                 map[sharks[cur_shark].row][sharks[cur_shark].col] = 0; // 현재 상어 위치 비워줌
                 move(cur_shark); // 상어 이동
+            }
+            for(int cur_shark = 0; cur_shark < sharks.length; cur_shark++) {
+                if(sharks[cur_shark] == null) continue; // 죽은 상어는 continue
+                int other_shark = map[sharks[cur_shark].row][sharks[cur_shark].col]; // 다른 상어(없으면 0)
+                if (other_shark != 0) { // 다른 상어 존재
+                    if (sharks[other_shark].size < sharks[cur_shark].size) {
+                        sharks[other_shark] = null; // 다른 상어 잡아먹음
+                        map[sharks[cur_shark].row][sharks[cur_shark].col] = cur_shark; // 해당 위치에 현재 상어
+                    } else {
+                        sharks[cur_shark] = null; // 현재 상어 잡아먹힘
+                    }
+                } else {
+                    map[sharks[cur_shark].row][sharks[cur_shark].col] = cur_shark; // 다른 상어 없으면 해당 위치에 현재 상어
+                }
+            }
+            /*
+            for(int cur_shark = 0; cur_shark < sharks.length; cur_shark++){
+                if(sharks[cur_shark] == null) continue; // 죽은 상어는 continue
+                map[sharks[cur_shark].row][sharks[cur_shark].col] = 0; // 현재 상어 위치 비워줌
+                move(cur_shark); // 상어 이동
                 int other_shark = map[sharks[cur_shark].row][sharks[cur_shark].col]; // 다른 상어(없으면 0)
                 if(other_shark != 0){ // 다른 상어 존재
                     if(sharks[other_shark].size < sharks[cur_shark].size){
@@ -72,6 +92,7 @@ public class Main {
                     map[sharks[cur_shark].row][sharks[cur_shark].col] = cur_shark; // 다른 상어 없으면 해당 위치에 현재 상어
                 }
             }
+             */
         }
         sb.append(result);
     }
